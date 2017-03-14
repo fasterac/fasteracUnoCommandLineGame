@@ -20,12 +20,12 @@ public class Main {
 		deck.addOneCard(c6);
 		deck.addOneCard(c7);
 		
-		deck.removeOneCard(c5);
-		
+		deck.removeOneCard(c5);		
 		
 		System.out.println();
 		
 		
+		//----------------------------------------------------------
 		GameControl gameControl = new GameControl();
 		while(!gameControl.gameSetting()){
 			System.out.println("----------Setting again----------");

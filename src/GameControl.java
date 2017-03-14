@@ -24,7 +24,7 @@ public class GameControl {
 				player = scanner.nextInt();
 				break;
 			}catch (InputMismatchException exception) {
-				System.out.println("Please enter number");
+				System.err.println("Please enter number");
 			}
 		}
 		
@@ -32,9 +32,14 @@ public class GameControl {
 			try{
 				System.out.print("How many player want to play with computer: ");
 				humanplay = scanner.nextInt();
+				if(humanplay > player){
+					throw new TooMuchHumanPlayerException();
+				}
 				break;
+			}catch (TooMuchHumanPlayerException e) {
+				System.err.println("Human can't be more than all player. Current All Player now:" + player);
 			}catch (InputMismatchException exception) {
-				System.out.println("Please enter number");
+				System.err.println("Please enter number");
 			}
 		}
 		
