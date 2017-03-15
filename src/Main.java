@@ -30,12 +30,6 @@ public class Main {
 		while(!gameControl.gameSetting()){
 			System.out.println("----------Setting again----------");
 		}
-		System.out.println("##############################");
-		System.out.println("------------------------------");
-		System.out.println("----------GAME START----------");
-		System.out.println("------------------------------");
-		System.out.println("##############################");
-		System.out.println("");
 		
 
 	}
