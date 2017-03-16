@@ -13,7 +13,8 @@ public class GameControl {
 	private Deck unuseDeck, trashDeck;
 	private Boolean isRotationRight = true;
 	private Card currentCard, previousPlaceAbleCard;
-	private int player, complay, humanplay, INIT_CARD = 7;
+	private int player, complay, humanplay;
+	private final int INIT_CARD = 7, ALLGAME_CARD = 14*7, CARD_IN_SUIT = 14;
 	private String tempstr;
 	
 	Scanner scanner = new Scanner(System.in);
@@ -21,7 +22,7 @@ public class GameControl {
 	public Boolean gameSetting(){
 		while(true){
 			try{
-				System.out.print("How many All player: "); //not < 2
+				System.out.print("How many All player: "); //not <2 and >14
 				tempstr = scanner.nextLine();
 				player = Integer.parseInt(tempstr);
 				break;
@@ -32,7 +33,7 @@ public class GameControl {
 			}
 		}
 		
-		while(true){ //not 0
+		while(true){ //not 0 and <allplayer
 			try{
 				System.out.print("How many player want to play with computer: ");
 				tempstr = scanner.nextLine();
@@ -78,6 +79,7 @@ public class GameControl {
 		unuseDeck.printAllCardInDeck();
 		listPlayer = createPlayerList();
 		printRotation(listPlayer);
+		drawCard();
 	}
 	
 	private Deck CreateUnuseDeck() { //can serializable
@@ -85,7 +87,7 @@ public class GameControl {
 		Random random = new Random();
 		CardColor color = CardColor.BlACK; 
 				
-		for (int i = 0; i < 14*7; i++) {
+		for (int i = 0; i < ALLGAME_CARD; i++) {
 			int colorN = random.nextInt(4) + 1;
 			switch (colorN) {
 				case 1: color = CardColor.RED; break;
@@ -94,19 +96,19 @@ public class GameControl {
 				case 4: color = CardColor.YELLOW; break;
 			}
 			
-			if(i%14 <= 9){
-				newDeck.addOneCard(new Card(i%14, color));
+			if(i%CARD_IN_SUIT <= 9){
+				newDeck.addOneCard(new Card(i%CARD_IN_SUIT, color));
 			}
-			else if(i%14 == 10){
+			else if(i%CARD_IN_SUIT == 10){
 				newDeck.addOneCard(new Card(CardType.SKIP, color));
 			}
-			else if(i%14 == 11){
+			else if(i%CARD_IN_SUIT == 11){
 				newDeck.addOneCard(new Card(CardType.CHANGEROTATION, color));
 			}
-			else if(i%14 == 12){
+			else if(i%CARD_IN_SUIT == 12){
 				newDeck.addOneCard(new Card(CardType.MULTIPLE2, color));
 			}
-			else if(i%14 == 13){
+			else if(i%CARD_IN_SUIT == 13){
 				newDeck.addOneCard(new Card(CardType.MULTIPLE4, color));
 			}
 		}
@@ -115,6 +117,7 @@ public class GameControl {
 	
 	private ArrayList<Player> createPlayerList(){
 		ArrayList<Player> list = new ArrayList<Player>();
+//		int ranCriteria = humanplay > complay ? complay/humanplay : humanplay/complay;
 		while (humanplay > 0 && complay > 0) {
 			if(humanplay > 0 || complay > 0){
 				if(Math.random() < 0.5 && humanplay > 0){
@@ -150,8 +153,18 @@ public class GameControl {
 		System.out.println("");
 	}
 	
-	private void drawCard(){
-		
+	private void drawCard(){ //jakpai
+		Deck tempDeck = new Deck();
+		int playerCounter = listPlayer.size()-1;
+		for (int i = 0; i < ALLGAME_CARD; i++) {
+			if(i%INIT_CARD==0 && playerCounter >= 0 && i != 0){
+				listPlayer.get(playerCounter).setPlayerDeck(tempDeck);
+				playerCounter -= 1;
+				tempDeck.clearAllCard();
+			}
+			tempDeck.addOneCard(unuseDeck.getCardAt(0));
+			unuseDeck.removeOneCard(unuseDeck.getCardAt(0));
+		}
 	}
 	
 

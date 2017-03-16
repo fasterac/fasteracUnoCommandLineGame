@@ -62,6 +62,10 @@ public class Deck {
 		System.out.println("");
 	}
 	
+	public void clearAllCard() {
+		cardInDeck.clear();
+	}
+	
 	
 	
 }
