@@ -12,6 +12,7 @@ public class Main {
 		Card c7 = new Card(CardType.SKIP, CardColor.GREEN);
 		
 		Deck deck = new Deck();
+		Deck deck2 = new Deck();
 		deck.addOneCard(c1);
 		deck.addOneCard(c2);
 		deck.addOneCard(c3);
@@ -20,7 +21,12 @@ public class Main {
 		deck.addOneCard(c6);
 		deck.addOneCard(c7);
 		
-		deck.removeOneCard(c5);		
+		deck.removeOneCard(c5);	
+		
+		HumanPlayer player = new HumanPlayer();
+		player.setPlayerDeck(deck);
+//		player.checkPlayAbleCard(new Card(CardType.CHANGEROTATION, CardColor.GREEN));
+//		player.getUsableDeck().printAllCardInDeck();
 		
 		System.out.println();
 		

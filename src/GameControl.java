@@ -11,8 +11,8 @@ public class GameControl {
 
 	private ArrayList<Player> listPlayer;
 	private Deck unuseDeck, trashDeck;
-	private Boolean isRotationRight = true;
-	private Card currentCard, previousPlaceAbleCard;
+	private Boolean isRotationRight = true, saidUno=false;
+	private Card currentCard, roundCard;
 	private int player, complay, humanplay;
 	private final int INIT_CARD = 7, ALLGAME_CARD = 14*7, CARD_IN_SUIT = 14;
 	private String tempstr;
@@ -22,7 +22,7 @@ public class GameControl {
 	public Boolean gameSetting(){
 		while(true){
 			try{
-				System.out.print("How many All player: "); //not <2 and >14
+				System.out.print("How many All player: "); //not <2 and >13 not 14
 				tempstr = scanner.nextLine();
 				player = Integer.parseInt(tempstr);
 				break;
@@ -68,6 +68,8 @@ public class GameControl {
 		}
 	}
 	
+	
+	
 	private void gameStart(){
 		System.out.println("##############################");
 		System.out.println("------------------------------");
@@ -76,11 +78,64 @@ public class GameControl {
 		System.out.println("##############################");
 		System.out.println("");
 		unuseDeck = CreateUnuseDeck();
-		unuseDeck.printAllCardInDeck();
+		unuseDeck.shuffleCard(1);
+		trashDeck = new Deck();
 		listPlayer = createPlayerList();
 		printRotation(listPlayer);
 		drawCard();
+		for (int i = 0; i < unuseDeck.countCard(); i++) { //first card must be number
+			System.out.println(unuseDeck.countCard() + unuseDeck.getCardAt(i).getType().getText() );
+			if(unuseDeck.getCardAt(i).getType() == CardType.NUMBER){
+				exchangeCard(unuseDeck, trashDeck);
+				break;
+			}
+		}
+		currentCard = trashDeck.getCardAt(0);
+		roundCard = trashDeck.getCardAt(0);
+		
+		
+		//in turn   while game end == true
+		for (Player player : listPlayer) {
+			System.out.println("");
+			System.out.println(player.getPlayerName() +" "+roundCard.toString());
+			player.checkPlayAbleCard(roundCard);			
+			player.getPlayerDeck().printAllCardInDeck();
+			player.getUsableDeck().printAllCardInDeck();
+			
+//			if (player.getUsableDeck().countCard() != 0) {
+//				if(currentCard.getType() == CardType.NUMBER){
+//					currentCard = player.chooseCard();
+//					
+//					trashDeck.addOneCard(currentCard);
+//				}
+//				else if(currentCard.getType() == CardType.SKIP){
+//					System.out.println(player.getPlayerName()" has been SKIPed");
+//				}
+//			}
+//			else{
+//				System.out.println("You Can't use any card there. Press ENTER to pass and recive card");
+//				exchangeCard(unuseDeck, player.getPlayerDeck());
+//			}
+//			
+//			if(player.getPlayerType() == PlayerType.Human && player.getStatus() == PlayingStatus.Uno && saidUno == false){
+//				System.out.println("You forgot to said UNO......  Here are some card");
+//				exchangeCard(unuseDeck, player.getPlayerDeck());
+//			}
+			
+			/// end turn
+			meansureRoundCard();
+			if(unuseDeck.countCard() < 6){
+				//get some card from trash
+			}
+		}
 	}
+	
+	
+	
+	
+	
+	
+	
 	
 	private Deck CreateUnuseDeck() { //can serializable
 		Deck newDeck = new Deck();
@@ -116,28 +171,29 @@ public class GameControl {
 	}
 	
 	private ArrayList<Player> createPlayerList(){
+		int numhuman=1, numcom=1;
 		ArrayList<Player> list = new ArrayList<Player>();
 //		int ranCriteria = humanplay > complay ? complay/humanplay : humanplay/complay;
 		while (humanplay > 0 && complay > 0) {
 			if(humanplay > 0 || complay > 0){
 				if(Math.random() < 0.5 && humanplay > 0){
-					list.add(new HumanPlayer());
+					list.add(new HumanPlayer("Player" + String.format("%02d", humanplay)));
 					humanplay -= 1;
 				}
 				else if(Math.random() >= 0.5 && complay > 0){
-					list.add(new ComputerPlayer());
+					list.add(new ComputerPlayer("Computer" + String.format("%02d", complay)));
 					complay -= 1;
 				}
 			}
 			if(humanplay > 0 && complay == 0){
 				while (humanplay > 0) {
-					list.add(new HumanPlayer());
+					list.add(new HumanPlayer("Player" + String.format("%02d", humanplay)));
 					humanplay -= 1;
 				}
 			}
 			else if(humanplay == 0 && complay > 0){
 				while (complay > 0) {
-					list.add(new ComputerPlayer());
+					list.add(new ComputerPlayer("Computer" + String.format("%02d", complay)));
 					complay -= 1;
 				}
 			}
@@ -147,26 +203,33 @@ public class GameControl {
 	
 	private void printRotation(ArrayList<Player> listPlayer){ //player this turn  at left
 		for (int i = 0; i < listPlayer.size(); i++) {
-			System.out.print(listPlayer.get(i));
+			System.out.print(listPlayer.get(i).getPlayerName());
 			System.out.print(", ");
 		}
 		System.out.println("");
 	}
 	
 	private void drawCard(){ //jakpai
-		Deck tempDeck = new Deck();
 		int playerCounter = listPlayer.size()-1;
 		for (int i = 0; i < ALLGAME_CARD; i++) {
 			if(i%INIT_CARD==0 && playerCounter >= 0 && i != 0){
-				listPlayer.get(playerCounter).setPlayerDeck(tempDeck);
 				playerCounter -= 1;
-				tempDeck.clearAllCard();
 			}
-			tempDeck.addOneCard(unuseDeck.getCardAt(0));
-			unuseDeck.removeOneCard(unuseDeck.getCardAt(0));
+			if(playerCounter < 0){
+				break;
+			}
+			exchangeCard(unuseDeck, listPlayer.get(playerCounter).getPlayerDeck());
 		}
 	}
 	
+	private void exchangeCard(Deck remvDeck, Deck recvDeck){ //exchange the first card of remvdeck
+		recvDeck.addOneCard(remvDeck.getCardAt(0));
+		remvDeck.removeOneCard(remvDeck.getCardAt(0));
+	}
+	
+	private void meansureRoundCard(){   //should be apply next turn round card
+		roundCard = currentCard;
+	}
 
 
 }

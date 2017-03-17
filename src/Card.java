@@ -44,7 +44,7 @@ public class Card {
 			return this.type.getText() + ":" + this.color.getShortText() + this.number;
 		}
 		else if(this.type == CardType.MULTIPLE2){
-			return this.type.getText() + ":" + this.color.getShortText() + this.number;
+			return this.type.getText() + ":" + this.color.getShortText();
 		}
 		else if(this.type == CardType.MULTIPLE4){
 			return this.type.getText();

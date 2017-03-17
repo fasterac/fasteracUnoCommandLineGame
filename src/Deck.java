@@ -55,7 +55,8 @@ public class Deck {
 	}
 	
 	public void printAllCardInDeck(){
-		for (int i = 0; i < countCard(); i++) {
+		System.out.print("Deck has: ");
+		for (int i = 0; i < countCard(); i++) {			
 			System.out.print(getCardAt(i).toString());
 			System.out.print(", ");
 		}
