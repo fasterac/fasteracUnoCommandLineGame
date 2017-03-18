@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+
 public class Main {
 	
 	public static void main(String[] args) {
@@ -22,19 +26,44 @@ public class Main {
 		deck.addOneCard(c7);
 		
 		deck.removeOneCard(c5);	
+		//System.out.println(deck2.toText());
 		
-		HumanPlayer player = new HumanPlayer();
-		player.setPlayerDeck(deck);
+		//turn script test
+//		ArrayList<Integer> rr = new ArrayList<Integer>();
+//		rr.add(1); rr.add(2); //rr.add(3); rr.add(4); rr.add(5); rr.add(6); rr.add(7);
+//		int ccc = 20;
+//		Scanner scanner = new Scanner(System.in);
+//		String tempstr;
+//		Boolean rev = true;
+//		
+//		
+//		while (ccc > 1) {
+//			tempstr = scanner.nextLine();
+//			if (!tempstr.isEmpty()){
+//				rev = !rev;
+//			}
+//			if(rev){
+//				Collections.rotate(rr, -1);
+//			}
+//			else if(!rev){
+//				Collections.rotate(rr, 1);
+//			}
+//			System.out.println(rr);
+//		}
+		
+		
+//		HumanPlayer player = new HumanPlayer();
+//		player.setPlayerDeck(deck);
 //		player.checkPlayAbleCard(new Card(CardType.CHANGEROTATION, CardColor.GREEN));
 //		player.getUsableDeck().printAllCardInDeck();
 		
-		System.out.println();
-		
+
+		System.out.println("");
 		
 		//----------------------------------------------------------
 		GameControl gameControl = new GameControl();
 		while(!gameControl.gameSetting()){
-			System.out.println("----------Setting again----------");
+			System.out.println("System: ----------Setting again----------");
 		}
 		
 

@@ -28,20 +28,21 @@ public abstract class Player {
 		return false;
 	}
 	
-	//can stack with this  if samecolor need diff type || if number same color need diff num
-//	public Boolean isCardCanStack(Card c1, Card c2){  
-//		System.out.println("--Compare card -- " + c1.toString() + " : " + c2.toString());
-//		if(c1.getType() == c2.getType()){
-//			if(c1.getType() != CardType.NUMBER){return true;}
-//			else if(c1.getType() == CardType.NUMBER && c1.getNumber() == c2.getNumber()){return true;}
-//			else{return false;}
-//		}
-//		else if(c1.getColor() == c2.getColor()){
-//			if(c1.getType() == CardType.NUMBER && c1.getNumber() != c2.getNumber()){return false;}
-//			else{return true;}
-//		}
-//		return false;
-//	}
+	//can stack with this  if samecolor need same type || if number same color need diff num
+	public Boolean isCardCanStack(Card c1, Card c2){  
+		//System.out.println("--Compare card -- " + c1.toString() + " : " + c2.toString());
+		if(c1.getColor() == c2.getColor()){
+			if(c1.getType() == c2.getType() && c1.getType() != CardType.NUMBER){return true;}
+			else if(c1.getType()==CardType.NUMBER && c2.getType()==CardType.NUMBER && c1.getNumber()==c2.getNumber()){return true;}
+			else{return false;}
+		}
+		else if(c1.getType() == c2.getType()){ 
+			if(c1.getType() == CardType.NUMBER && c1.getNumber() == c2.getNumber()){return true;}
+			if(c1.getType() == CardType.NUMBER && c1.getNumber() != c2.getNumber()){return false;}
+			else{return true;}
+		}
+		return false;
+	}
 	
 	public Deck checkPlayAbleCard(Card recentCard){
 		for (int i = 0; i < playerDeck.countCard(); i++) {
@@ -53,7 +54,7 @@ public abstract class Player {
 		return usableDeck;
 	}
 	
-	public abstract Card chooseCard();
+	public abstract Deck chooseCard(Card roundCard);
 	
 	
 	

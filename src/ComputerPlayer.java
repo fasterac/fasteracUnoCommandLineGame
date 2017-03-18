@@ -22,9 +22,10 @@ public class ComputerPlayer extends Player {
 	private String playerName;
 
 	@Override
-	public Card chooseCard() {
+	public Deck chooseCard(Card roundCard) {
+		Deck choosed = new Deck();
 		
-		return null;
+		return choosed;
 	}
 
 

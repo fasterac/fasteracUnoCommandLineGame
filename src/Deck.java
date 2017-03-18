@@ -55,10 +55,15 @@ public class Deck {
 	}
 	
 	public void printAllCardInDeck(){
-		System.out.print("Deck has: ");
-		for (int i = 0; i < countCard(); i++) {			
-			System.out.print(getCardAt(i).toString());
-			System.out.print(", ");
+		if(countCard() == 0){
+			System.out.print("Deck has: -No card-");
+		}
+		else{
+			System.out.print("Deck has: ");
+			for (int i = 0; i < countCard(); i++) {			
+				System.out.print(getCardAt(i).toString());
+				System.out.print(", ");
+			}
 		}
 		System.out.println("");
 	}
@@ -67,6 +72,40 @@ public class Deck {
 		cardInDeck.clear();
 	}
 	
+	public Boolean haveCard(Card card){
+		return cardInDeck.contains(card);
+	}
+	
+	public String toText(){
+		String cardare = "";
+		if(countCard() == 0){
+			cardare = cardare+"(no card)";
+		}
+		else{			
+			for (int i = 0; i < countCard(); i++) {		
+				cardare = cardare+getCardAt(i).toString();
+				cardare = cardare+", ";
+			}
+			cardare = cardare.substring(0, cardare.length()-2);
+		}
+		return cardare;
+	}
+	
+	public String toChooseText(){
+		String cardare = "";
+		if(countCard() == 0){
+			cardare = cardare+"[0](no card)";
+		}
+		else{			
+			for (int i = 0; i < countCard(); i++) {	
+				cardare = cardare+"["+(i+1)+"]";
+				cardare = cardare+getCardAt(i).toString();
+				cardare = cardare+", ";
+			}
+			cardare = cardare.substring(0, cardare.length()-2);
+		}
+		return cardare;
+	}
 	
 	
 }
